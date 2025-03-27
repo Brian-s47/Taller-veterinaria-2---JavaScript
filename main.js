@@ -1,6 +1,6 @@
 // *******************************  Zona De Funciones **********************************
-// ****  Funcion de Ingresar Mascota nueva ****
-function ingresarMascota(){
+// ****  Funcion para tomar datos de Mascota nueva ****
+function datosMascota(callBack){
     let nuevaMascota = {
         nombre: "",
         especie: "",
@@ -14,12 +14,16 @@ function ingresarMascota(){
     nuevaMascota.edad = window.prompt(`Favor ingresar la edad de su mascota: `)
     nuevaMascota.peso = window.prompt(`Favor ingresar el peso en Kg su mascota: `)
     nuevaMascota.estadoSalud = window.prompt(`Favor ingresar el estado de salud de su mascota: `)
-
-    setTimeout(() => {
-        console.log(`Iniciando proceso de Registro de Mascota...`);
-        console.log(nuevaMascota);        
-        return (nuevaMascota);
-    }, 9000);
+    registrarMascota(nuevaMascota, callBack)
+}
+// ****  Funcion de Ingresar Mascota nueva ****
+function registrarMascota(nuevaMascota, callBack){
+    alert(`Se esta registrando su mascota....`)
+    setTimeout(function(){
+        mascotas.push(nuevaMascota);
+        alert(`Su Mascota se registro Correctamente`)
+        callBack()
+    },2000)
 }
 // ****  Funcion Para mostrar todas las mascotas ingresadas ****
 function listarMascotas(){
@@ -33,37 +37,39 @@ function listarMascotas(){
     }
 }
 // ****  Funcion Para Buscar mascota por nombre ****
-function buscarMascota(){
+function buscarMascota(callBack){
     let nombre = prompt(`Favor ingresar el Nombre que desea buscar: (Solo Letras)`)
     for(let i = 0; i < mascotas.length; i++){
         if (mascotas[i].nombre === nombre){
-            setTimeout(() => {
-                window.alert("Consultando en la base de datos...");
-            }, 3000);
-            window.alert(`Informacion encontrada:
-            Nombre: ${mascotas[i].nombre}
-            Especie: ${mascotas[i].especie}
-            Edad: ${mascotas[i].edad}
-            Peso: ${mascotas[i].peso}
-            Estado De Salud: ${mascotas[i].estadoSalud}`)
+            alert(`Se esta buscando su mascota...`)
+            setTimeout(function(){
+                window.alert(`Informacion encontrada:
+                    Nombre: ${mascotas[i].nombre}
+                    Especie: ${mascotas[i].especie}
+                    Edad: ${mascotas[i].edad}
+                    Peso: ${mascotas[i].peso}
+                    Estado De Salud: ${mascotas[i].estadoSalud}`)
+                callBack()
+            },2000)
         }else{
             alert("La mascota no fue encontrada")
         }
     }
 }
 // ****  Funcion Para Actualizar estado de salud de la mascota por nombre ****
-function actualizarMascota(){
+function actualizarMascota(callBack){
     let nombre = prompt(`Favor ingresar el Nombre que desea Modificar Su estado de salud: (Solo Letras)`)
     for(let i = 0; i < mascotas.length; i++){
         if (mascotas[i].nombre === nombre){
             let nuevoEstado = window.prompt(`Favor ingresar el estado de salud de su mascota: `)
-            mascotas[i].estadoSalud = nuevoEstado
-            setTimeout(() => {
-                window.alert("Veterinario Se encuentra actualizando el registro...");
-            }, 5000);
-            window.alert(`Informacion Actualizada:
-            Nombre: ${mascotas[i].nombre}
-            Estado De Salud: ${mascotas[i].estadoSalud}`)
+            alert(`El veterinario esta actualizando el estado de su mascota....`)
+            setTimeout(function(){
+                mascotas[i].estadoSalud = nuevoEstado
+                window.alert(`Informacion Actualizada:
+                Nombre: ${mascotas[i].nombre}
+                Estado De Salud: ${mascotas[i].estadoSalud}`)
+                callBack()
+            },2000)
         }else{
             alert("La mascota no fue encontrada")
         }
@@ -95,25 +101,20 @@ function iniciarSistema(){
         );
         switch (opcionMenu){
             case "1":
-                let nuevaMascota = ingresarMascota();
-                mascotas.push(nuevaMascota);
-                setTimeout(() => {
-                    window.alert("Iniciando proceso de Registro de Mascota...");
-                }, 5000);
-                window.alert("La mascota se a ingresado correctamente");
-                break;
+                datosMascota(iniciarSistema);
+                return;
             case "2":
                 // window.alert("Listar mascotas");
                 listarMascotas()
                 break;
             case "3":
                 // window.alert("Buscar Mascota");
-                buscarMascota()
-                break;
+                buscarMascota(iniciarSistema)
+                return;
             case "4":
                 // window.alert("Actualizar estado de mascota");
-                actualizarMascota()
-                break;
+                actualizarMascota(iniciarSistema)
+                return;
             case "5":
                 // window.alert("Eliminar Mascotas");
                 EliminarMascota()
